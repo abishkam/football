@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  football-db:
+    image: postgres:latest
+    container_name: football-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+      # имя БД
+      POSTGRES_DB: football-db
+      POSTGRES_SCHEMA: football
+      STOP_ON_MIGRATION_FAILURE: "false"
+    volumes:
+      - db-data:/var/lib/postgresql/football-db
+    healthcheck:
+      test: PGPASSWORD=abishka psql -d football-db -U abishka -w -c '\q'
+      interval: 20s
+      timeout: 10s
+
+volumes:
+  db-data:
+    external: false
+
+
